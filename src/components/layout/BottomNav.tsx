@@ -8,7 +8,7 @@ const TABS = [
 
 export function BottomNav() {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-t border-gray-200/80 dark:border-gray-800 flex z-10 shadow-lg shadow-black/5">
+    <nav className="safe-bottom fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-t border-gray-200/80 dark:border-gray-800 flex z-10 shadow-lg shadow-black/5">
       {TABS.map(tab => (
         <NavLink
           key={tab.to}

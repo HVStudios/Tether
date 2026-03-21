@@ -13,6 +13,14 @@ body {
   color: #111827;
 }
 
+.safe-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
 .dark body {
   background: #0a0a0f;
   color: #f3f4f6;
