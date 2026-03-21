@@ -10,6 +10,8 @@ interface Props {
 export function WeeklySummary({ thisAvg, count, topTags, trend }: Props) {
   if (thisAvg === null && count === 0) return null
 
+  const mood = thisAvg !== null ? getMood(Math.round(thisAvg)) : null
+
   const trendStr =
     trend === null ? null
     : trend > 0 ? `↑ ${trend.toFixed(1)} vs last week`
@@ -17,36 +19,47 @@ export function WeeklySummary({ thisAvg, count, topTags, trend }: Props) {
     : '= same as last week'
 
   const trendColor =
-    trend === null ? ''
-    : trend > 0 ? 'text-green-600 dark:text-green-400'
-    : trend < 0 ? 'text-red-500 dark:text-red-400'
-    : 'text-gray-400 dark:text-gray-500'
+    trend === null ? 'text-white/60'
+    : trend > 0 ? 'text-emerald-200'
+    : trend < 0 ? 'text-red-200'
+    : 'text-white/50'
 
   return (
-    <div className="bg-violet-50 dark:bg-violet-950 border border-violet-200 dark:border-violet-800 rounded-2xl p-4 flex gap-4 items-center">
-      <div className="text-4xl shrink-0">
-        {thisAvg !== null ? getMood(Math.round(thisAvg)).emoji : '📋'}
+    <div
+      className="rounded-2xl p-4 flex gap-4 items-center shadow-md text-white overflow-hidden relative"
+      style={{
+        background: mood
+          ? `linear-gradient(135deg, ${mood.color}ee, ${mood.color}99)`
+          : 'linear-gradient(135deg, #7c3aed, #6d28d9)',
+      }}
+    >
+      {/* Subtle decorative circle */}
+      <div className="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-white/10 pointer-events-none" />
+      <div className="absolute -right-2 bottom-0 w-16 h-16 rounded-full bg-white/5 pointer-events-none" />
+
+      <div className="text-5xl shrink-0 drop-shadow relative">
+        {mood ? mood.emoji : '📋'}
       </div>
-      <div className="flex flex-col gap-0.5 min-w-0">
-        <p className="text-xs font-semibold text-violet-600 dark:text-violet-400 uppercase tracking-wide">This week</p>
-        <div className="flex items-baseline gap-2">
+      <div className="flex flex-col gap-0.5 min-w-0 relative">
+        <p className="text-xs font-semibold text-white/60 uppercase tracking-wider">This week</p>
+        <div className="flex items-baseline gap-2 flex-wrap">
           {thisAvg !== null ? (
-            <span className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-              {thisAvg}<span className="text-sm font-normal text-gray-400 dark:text-gray-500">/10</span>
+            <span className="text-2xl font-black">
+              {thisAvg}<span className="text-sm font-normal opacity-60">/10</span>
             </span>
           ) : (
-            <span className="text-sm text-gray-500 dark:text-gray-400">No entries yet</span>
+            <span className="text-sm opacity-70">No entries yet</span>
           )}
           {trendStr && (
-            <span className={`text-xs font-medium ${trendColor}`}>{trendStr}</span>
+            <span className={`text-xs font-semibold ${trendColor}`}>{trendStr}</span>
           )}
         </div>
-        <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-xs text-gray-400 dark:text-gray-500">{count} {count === 1 ? 'entry' : 'entries'}</span>
+        <div className="flex items-center gap-2 flex-wrap mt-0.5">
+          <span className="text-xs text-white/60">{count} {count === 1 ? 'entry' : 'entries'}</span>
           {topTags.length > 0 && (
             <div className="flex gap-1">
               {topTags.map(tag => (
-                <span key={tag} className="rounded-full bg-violet-100 dark:bg-violet-900 text-violet-700 dark:text-violet-300 px-2 py-0.5 text-xs">
+                <span key={tag} className="rounded-full bg-white/20 text-white px-2 py-0.5 text-xs font-medium">
                   {tag}
                 </span>
               ))}
