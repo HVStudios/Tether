@@ -39,8 +39,8 @@ export function TagSelector({ selected, suggestions, onChange }: Props) {
 
   return (
     <div className="flex flex-col gap-2">
-      <label className="text-sm font-medium text-gray-700">
-        Tags <span className="text-gray-400 font-normal">(optional)</span>
+      <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+        Tags <span className="text-gray-400 dark:text-gray-500 font-normal">(optional)</span>
       </label>
 
       {allDisplayed.length > 0 && (
@@ -52,8 +52,8 @@ export function TagSelector({ selected, suggestions, onChange }: Props) {
               onClick={() => toggle(tag)}
               className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
                 selected.includes(tag)
-                  ? 'bg-violet-100 text-violet-700 ring-1 ring-violet-300'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  ? 'bg-violet-100 dark:bg-violet-900 text-violet-700 dark:text-violet-300 ring-1 ring-violet-300 dark:ring-violet-700'
+                  : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'
               }`}
             >
               {selected.includes(tag) && '✓ '}
@@ -70,13 +70,13 @@ export function TagSelector({ selected, suggestions, onChange }: Props) {
           value={input}
           onChange={e => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          className="flex-1 rounded-lg border border-gray-300 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
+          className="flex-1 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
         />
         <button
           type="button"
           onClick={addNew}
           disabled={!input.trim()}
-          className="rounded-lg bg-gray-100 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-200 disabled:opacity-40 transition-colors"
+          className="rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 px-3 py-1.5 text-sm font-medium disabled:opacity-40 transition-colors"
         >
           Add
         </button>

@@ -21,10 +21,10 @@ function CustomTooltip({ payload }: { payload?: TooltipPayload[] }) {
   const { date, average, count } = payload[0].payload
   const { emoji, label } = getMood(Math.round(average))
   return (
-    <div className="bg-white border border-gray-200 rounded-xl shadow-sm px-3 py-2 text-sm">
-      <p className="font-semibold text-gray-700">{formatChartDate(date)}</p>
-      <p className="text-gray-900">{emoji} {average} <span className="text-gray-400">({label})</span></p>
-      <p className="text-xs text-gray-400">{count} {count === 1 ? 'entry' : 'entries'}</p>
+    <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm px-3 py-2 text-sm">
+      <p className="font-semibold text-gray-700 dark:text-gray-300">{formatChartDate(date)}</p>
+      <p className="text-gray-900 dark:text-gray-100">{emoji} {average} <span className="text-gray-400 dark:text-gray-500">({label})</span></p>
+      <p className="text-xs text-gray-400 dark:text-gray-500">{count} {count === 1 ? 'entry' : 'entries'}</p>
     </div>
   )
 }
@@ -37,7 +37,7 @@ export function MoodLineChart({ data }: Props) {
   return (
     <ResponsiveContainer width="100%" height={280}>
       <LineChart data={data} margin={{ top: 8, right: 8, left: -24, bottom: 0 }}>
-        <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
+        <CartesianGrid strokeDasharray="3 3" stroke="currentColor" className="text-gray-100 dark:text-gray-800" />
         <XAxis
           dataKey="date"
           tickFormatter={formatChartDate}

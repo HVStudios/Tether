@@ -22,19 +22,19 @@ export function MoodPicker({ value, onChange }: Props) {
               title={`${score} – ${label}`}
               className={`flex flex-col items-center gap-0.5 rounded-xl p-2 text-2xl transition-all
                 ${selected
-                  ? 'ring-2 ring-violet-500 ring-offset-2 bg-violet-50 scale-110'
-                  : 'hover:bg-gray-100 hover:scale-105'
+                  ? 'ring-2 ring-violet-500 ring-offset-2 dark:ring-offset-gray-900 bg-violet-50 dark:bg-violet-950 scale-110'
+                  : 'hover:bg-gray-100 dark:hover:bg-gray-800 hover:scale-105'
                 }`}
             >
               <span role="img" aria-label={label}>{emoji}</span>
-              <span className="text-[10px] text-gray-400 font-medium">{score}</span>
+              <span className="text-[10px] text-gray-400 dark:text-gray-500 font-medium">{score}</span>
             </button>
           )
         })}
       </div>
 
       {value !== null && (
-        <p className="text-sm text-gray-600 font-medium">
+        <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">
           {getMood(value).emoji} {getMood(value).label}
         </p>
       )}

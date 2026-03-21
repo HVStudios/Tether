@@ -38,14 +38,36 @@ export function useMoodEntries() {
       .single()
 
     if (error) return { error: error.message }
-
-    // Optimistically prepend the new entry
-    setEntries(prev => [data as MoodEntry, ...prev])
+    setEntries(prev => [data as MoodEntry, ...prev].sort(
+      (a, b) => new Date(b.logged_at).getTime() - new Date(a.logged_at).getTime()
+    ))
     return { error: null }
   }
 
-  // Collect distinct tags from all entries (client-side)
+  async function update(id: string, patch: Partial<MoodEntryInsert>): Promise<{ error: string | null }> {
+    const { data, error } = await supabase
+      .from('mood_entries')
+      .update(patch)
+      .eq('id', id)
+      .select()
+      .single()
+
+    if (error) return { error: error.message }
+    setEntries(prev =>
+      prev.map(e => (e.id === id ? (data as MoodEntry) : e))
+          .sort((a, b) => new Date(b.logged_at).getTime() - new Date(a.logged_at).getTime())
+    )
+    return { error: null }
+  }
+
+  async function remove(id: string): Promise<{ error: string | null }> {
+    const { error } = await supabase.from('mood_entries').delete().eq('id', id)
+    if (error) return { error: error.message }
+    setEntries(prev => prev.filter(e => e.id !== id))
+    return { error: null }
+  }
+
   const allTags = Array.from(new Set(entries.flatMap(e => e.tags))).sort()
 
-  return { entries, loading, error, insert, refresh: fetch, allTags }
+  return { entries, loading, error, insert, update, remove, refresh: fetch, allTags }
 }
