@@ -8,11 +8,11 @@ export function AuthPage() {
   const [tab, setTab] = useState<Tab>('login')
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-violet-50 via-white to-purple-50 dark:from-gray-950 dark:via-gray-950 dark:to-violet-950/40 px-4 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-300/60 via-violet-200/40 to-purple-200/30 dark:from-[#0a0a0f] dark:via-violet-950/30 dark:to-[#0a0a0f] px-4 relative overflow-hidden">
       {/* Decorative background orbs */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-violet-300/20 dark:bg-violet-700/10 rounded-full blur-3xl -translate-y-1/2 pointer-events-none" />
-      <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-purple-300/20 dark:bg-purple-700/10 rounded-full blur-3xl translate-y-1/2 pointer-events-none" />
-      <div className="absolute top-1/2 left-0 w-64 h-64 bg-fuchsia-200/15 dark:bg-fuchsia-800/10 rounded-full blur-3xl -translate-x-1/2 pointer-events-none" />
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-violet-500/15 dark:bg-violet-600/10 rounded-full blur-3xl -translate-y-1/2 pointer-events-none" />
+      <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-purple-500/15 dark:bg-purple-700/10 rounded-full blur-3xl translate-y-1/2 pointer-events-none" />
+      <div className="absolute top-1/2 left-0 w-64 h-64 bg-fuchsia-500/10 dark:bg-fuchsia-800/10 rounded-full blur-3xl -translate-x-1/2 pointer-events-none" />
 
       <div className="w-full max-w-sm relative">
         <div className="text-center mb-8">

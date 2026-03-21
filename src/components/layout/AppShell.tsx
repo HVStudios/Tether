@@ -8,7 +8,7 @@ export function AppShell() {
   const { theme, toggle } = useTheme()
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-slate-50 via-violet-50/30 to-purple-50/20 dark:from-gray-950 dark:via-violet-950/20 dark:to-gray-950">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-slate-300/60 via-violet-200/40 to-purple-200/30 dark:from-[#0a0a0f] dark:via-violet-950/30 dark:to-[#0a0a0f]">
       <header className="bg-gradient-to-r from-violet-600 to-purple-700 dark:from-violet-800 dark:to-purple-900 px-4 py-3 flex items-center justify-between sticky top-0 z-10 shadow-lg shadow-violet-500/20">
         <div className="flex items-center gap-2">
           <div className="w-7 h-7 rounded-lg bg-white/20 flex items-center justify-center">
