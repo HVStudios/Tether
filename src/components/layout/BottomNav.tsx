@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom'
 const TABS = [
   { to: '/log',     label: 'Log',     icon: '✏️' },
   { to: '/history', label: 'History', icon: '📋' },
-  { to: '/chart',   label: 'Chart',   icon: '📈' },
+  { to: '/chart',   label: 'Stats',   icon: '📊' },
 ]
 
 export function BottomNav() {
