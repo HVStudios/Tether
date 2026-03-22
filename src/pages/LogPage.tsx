@@ -7,6 +7,8 @@ import { MoodTriggers } from '../components/log/MoodTriggers'
 import { DateTimePicker } from '../components/log/DateTimePicker'
 import { useMoodEntries } from '../hooks/useMoodEntries'
 import { useStreak } from '../hooks/useStreak'
+import { useLevelUp } from '../hooks/useLevelUp'
+import { LevelUpModal } from '../components/stats/LevelUpModal'
 
 const PRESET_TAGS = [
   'work', 'social', 'exercise', 'sleep', 'family',
@@ -17,6 +19,7 @@ export function LogPage() {
   const { insert, allTags, entries } = useMoodEntries()
   const suggestions = [...new Set([...PRESET_TAGS, ...allTags])]
   const streak = useStreak(entries)
+  const { celebrateLevel, dismiss } = useLevelUp(entries)
 
   const [score, setScore] = useState<number | null>(null)
   const [note, setNote] = useState('')
@@ -51,6 +54,7 @@ export function LogPage() {
   }
 
   return (
+    <>
     <div className="flex flex-col gap-6 px-4 py-6 max-w-lg mx-auto">
       <div className="flex items-start justify-between">
         <div>
@@ -125,5 +129,8 @@ export function LogPage() {
         </button>
       </div>
     </div>
+
+    <LevelUpModal level={celebrateLevel} onDismiss={dismiss} />
+    </>
   )
 }

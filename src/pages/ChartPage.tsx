@@ -8,6 +8,7 @@ import { RecordsGrid } from '../components/stats/RecordsGrid'
 import { MoodDistributionChart } from '../components/stats/MoodDistributionChart'
 import { DayOfWeekChart } from '../components/stats/DayOfWeekChart'
 import { TagUsageChart } from '../components/stats/TagUsageChart'
+import { TagCorrelations } from '../components/stats/TagCorrelations'
 import { getMood } from '../utils/moodEmoji'
 
 const RANGE_OPTIONS = [
@@ -109,6 +110,8 @@ export function ChartPage() {
             <DayOfWeekChart entries={entries} />
             <TagUsageChart entries={entries} />
           </div>
+
+          <TagCorrelations entries={entries} />
 
           <AchievementGrid entries={entries} />
         </>

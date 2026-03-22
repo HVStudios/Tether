@@ -8,7 +8,7 @@ import { ChartPage } from './pages/ChartPage'
 import { AppShell } from './components/layout/AppShell'
 
 function AuthGuard() {
-  const { session, loading } = useAuthContext()
+  const { session, loading, isGuest } = useAuthContext()
 
   if (loading) {
     return (
@@ -18,7 +18,7 @@ function AuthGuard() {
     )
   }
 
-  if (!session) return <Navigate to="/auth" replace />
+  if (!session && !isGuest) return <Navigate to="/auth" replace />
   return <Outlet />
 }
 
