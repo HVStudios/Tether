@@ -8,8 +8,14 @@ import { DateTimePicker } from '../components/log/DateTimePicker'
 import { useMoodEntries } from '../hooks/useMoodEntries'
 import { useStreak } from '../hooks/useStreak'
 
+const PRESET_TAGS = [
+  'work', 'social', 'exercise', 'sleep', 'family',
+  'food', 'outdoors', 'creative', 'stress', 'grateful',
+]
+
 export function LogPage() {
   const { insert, allTags, entries } = useMoodEntries()
+  const suggestions = [...new Set([...PRESET_TAGS, ...allTags])]
   const streak = useStreak(entries)
 
   const [score, setScore] = useState<number | null>(null)
@@ -67,7 +73,7 @@ export function LogPage() {
 
         <MoodTriggers onSelect={handleTrigger} />
         <NoteInput value={note} onChange={setNote} />
-        <TagSelector selected={tags} suggestions={allTags} onChange={setTags} />
+        <TagSelector selected={tags} suggestions={suggestions} onChange={setTags} />
 
         <button
           type="button"
