@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { MoodEntry } from '../../lib/types'
 import { MoodPicker } from '../log/MoodPicker'
@@ -20,6 +20,16 @@ export function EditModal({ entry, allTags, onSave, onClose }: Props) {
   const [loggedAt, setLoggedAt] = useState(entry?.logged_at ?? new Date().toISOString())
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (entry) {
+      setScore(entry.score)
+      setNote(entry.note ?? '')
+      setTags(entry.tags ?? [])
+      setLoggedAt(entry.logged_at)
+      setError(null)
+    }
+  }, [entry?.id])
 
   async function handleSave() {
     if (!entry) return
