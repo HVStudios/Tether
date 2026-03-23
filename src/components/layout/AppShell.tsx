@@ -21,40 +21,42 @@ export function AppShell() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-slate-300/60 via-violet-200/40 to-purple-200/30 dark:from-[#0a0a0f] dark:via-violet-950/30 dark:to-[#0a0a0f]">
-      <header className="safe-top bg-gradient-to-r from-violet-600 to-purple-700 dark:from-violet-800 dark:to-purple-900 px-4 py-3 flex items-center justify-between sticky top-0 z-10 shadow-lg shadow-violet-500/20">
-        <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-white/20 flex items-center justify-center">
-            <span className="text-sm font-black text-white">T</span>
+      <header className="safe-top bg-gradient-to-r from-violet-600 to-purple-700 dark:from-violet-800 dark:to-purple-900 sticky top-0 z-10 shadow-lg shadow-violet-500/20">
+        <div className="px-4 py-3 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-lg bg-white/20 flex items-center justify-center">
+              <span className="text-sm font-black text-white">T</span>
+            </div>
+            <h1 className="text-lg font-bold text-white tracking-tight">Tether</h1>
           </div>
-          <h1 className="text-lg font-bold text-white tracking-tight">Tether</h1>
-        </div>
-        <div className="flex items-center gap-2">
-          {isGuest
-            ? <span className="text-xs text-violet-200 hidden sm:block">Guest mode</span>
-            : <span className="text-xs text-violet-200 hidden sm:block">{user?.email}</span>
-          }
-          <button
-            onClick={toggle}
-            aria-label="Toggle dark mode"
-            className="rounded-lg p-1.5 text-white/70 hover:text-white hover:bg-white/15 transition-colors"
-          >
-            {theme === 'dark' ? '☀️' : '🌙'}
-          </button>
-          {isGuest ? (
+          <div className="flex items-center gap-2">
+            {isGuest
+              ? <span className="text-xs text-violet-200 hidden sm:block">Guest mode</span>
+              : <span className="text-xs text-violet-200 hidden sm:block">{user?.email}</span>
+            }
             <button
-              onClick={handleSignUp}
-              className="text-xs text-white font-semibold transition-colors px-2.5 py-1 rounded-lg bg-white/20 hover:bg-white/30"
+              onClick={toggle}
+              aria-label="Toggle dark mode"
+              className="rounded-lg p-1.5 text-white/70 hover:text-white hover:bg-white/15 transition-colors"
             >
-              Sign up
+              {theme === 'dark' ? '☀️' : '🌙'}
             </button>
-          ) : (
-            <button
-              onClick={handleSignOut}
-              className="text-xs text-white/70 hover:text-white font-medium transition-colors px-2 py-1 rounded-lg hover:bg-white/15"
-            >
-              Sign out
-            </button>
-          )}
+            {isGuest ? (
+              <button
+                onClick={handleSignUp}
+                className="text-xs text-white font-semibold transition-colors px-2.5 py-1 rounded-lg bg-white/20 hover:bg-white/30"
+              >
+                Sign up
+              </button>
+            ) : (
+              <button
+                onClick={handleSignOut}
+                className="text-xs text-white/70 hover:text-white font-medium transition-colors px-2 py-1 rounded-lg hover:bg-white/15"
+              >
+                Sign out
+              </button>
+            )}
+          </div>
         </div>
       </header>
 
