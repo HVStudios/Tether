@@ -9,6 +9,7 @@ import { MoodDistributionChart } from '../components/stats/MoodDistributionChart
 import { DayOfWeekChart } from '../components/stats/DayOfWeekChart'
 import { TagUsageChart } from '../components/stats/TagUsageChart'
 import { TagCorrelations } from '../components/stats/TagCorrelations'
+import { MissionsCard } from '../components/stats/MissionsCard'
 import { getMood } from '../utils/moodEmoji'
 
 const RANGE_OPTIONS = [
@@ -110,6 +111,8 @@ export function ChartPage() {
             <DayOfWeekChart entries={entries} />
             <TagUsageChart entries={entries} />
           </div>
+
+          <MissionsCard entries={entries} />
 
           <TagCorrelations entries={entries} />
 

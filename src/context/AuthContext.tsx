@@ -7,6 +7,7 @@ import type { MoodEntry } from '../lib/types'
 
 const GUEST_KEY = 'tether_guest'
 const GUEST_ENTRIES_KEY = 'tether_guest_entries'
+const GUEST_XP_KEY = 'tether_missions_completed'
 
 interface AuthContextValue {
   session: Session | null
@@ -50,6 +51,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
       localStorage.removeItem(GUEST_ENTRIES_KEY)
     }
+
+    // Migrate guest mission XP events
+    const xpStored = localStorage.getItem(GUEST_XP_KEY)
+    if (xpStored) {
+      const events: Record<string, number> = JSON.parse(xpStored)
+      const rows = Object.entries(events).map(([source_key, xp]) => ({
+        user_id: userId,
+        source: 'mission',
+        source_key,
+        xp,
+      }))
+      if (rows.length > 0) {
+        await supabase
+          .from('xp_events')
+          .upsert(rows, { onConflict: 'user_id,source_key', ignoreDuplicates: true })
+      }
+      localStorage.removeItem(GUEST_XP_KEY)
+    }
+
     localStorage.removeItem(GUEST_KEY)
     setIsGuest(false)
   }
@@ -62,6 +82,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   function exitGuest() {
     localStorage.removeItem(GUEST_KEY)
     localStorage.removeItem(GUEST_ENTRIES_KEY)
+    localStorage.removeItem(GUEST_XP_KEY)
     setIsGuest(false)
   }
 

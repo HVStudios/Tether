@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { useXP } from '../../hooks/useXP'
+import { useTotalXP } from '../../hooks/useTotalXP'
 import type { MoodEntry } from '../../lib/types'
 
 const LEVEL_COLORS = [
@@ -20,7 +20,7 @@ interface Props {
 }
 
 export function LevelCard({ entries }: Props) {
-  const { totalXP, currentLevel, nextLevel, xpIntoLevel, xpForLevel, progress } = useXP(entries)
+  const { totalXP, currentLevel, nextLevel, xpIntoLevel, xpForLevel, progress } = useTotalXP(entries)
   const gradient = LEVEL_COLORS[currentLevel.level - 1]
 
   return (

@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
-import { useXP, type Level } from './useXP'
+import { useTotalXP } from './useTotalXP'
+import type { Level } from './useXP'
 import type { MoodEntry } from '../lib/types'
 
 const STORAGE_KEY = 'tether_last_level'
 
 export function useLevelUp(entries: MoodEntry[]) {
-  const { currentLevel } = useXP(entries)
+  const { currentLevel } = useTotalXP(entries)
   const initialised = useRef(false)
   const [celebrateLevel, setCelebrateLevel] = useState<Level | null>(null)
 
@@ -13,7 +14,6 @@ export function useLevelUp(entries: MoodEntry[]) {
     const stored = parseInt(localStorage.getItem(STORAGE_KEY) ?? '1', 10)
 
     if (!initialised.current) {
-      // On first render, just record the current level silently
       initialised.current = true
       if (currentLevel.level > stored) {
         localStorage.setItem(STORAGE_KEY, String(currentLevel.level))
@@ -27,9 +27,5 @@ export function useLevelUp(entries: MoodEntry[]) {
     }
   }, [currentLevel.level])
 
-  function dismiss() {
-    setCelebrateLevel(null)
-  }
-
-  return { celebrateLevel, dismiss }
+  return { celebrateLevel, dismiss: () => setCelebrateLevel(null) }
 }
