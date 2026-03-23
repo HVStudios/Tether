@@ -127,14 +127,20 @@ export const DAILY_MISSIONS: MissionDef[] = [
       ),
   },
   {
-    id: 'double_entry',
+    id: 'complete_picture',
     type: 'daily',
-    icon: '⚡',
-    title: 'Double Check-in',
-    description: 'Log 2 entries today',
+    icon: '🖼️',
+    title: 'Complete Picture',
+    description: 'Write a note AND add 2+ tags in a single entry today',
     xpReward: 35,
-    goal: 2,
-    progress: (e, from) => Math.min(entriesInPeriod(e, from).length, 2),
+    goal: 1,
+    progress: (e, from) =>
+      Math.min(
+        entriesInPeriod(e, from).filter(
+          en => (en.note?.length ?? 0) > 0 && (en.tags?.length ?? 0) >= 2
+        ).length,
+        1
+      ),
   },
   {
     id: 'honest_low',
@@ -175,14 +181,24 @@ export const WEEKLY_MISSIONS: MissionDef[] = [
       Math.min(new Set(entriesInPeriod(e, from).map(en => en.logged_at.slice(0, 10))).size, 7),
   },
   {
-    id: 'ten_entries_week',
+    id: 'fresh_tag_week',
     type: 'weekly',
-    icon: '🔟',
-    title: 'High Volume',
-    description: 'Log 10 entries this week',
-    xpReward: 100,
-    goal: 10,
-    progress: (e, from) => Math.min(entriesInPeriod(e, from).length, 10),
+    icon: '🆕',
+    title: 'Fresh Tag',
+    description: 'Use a tag you haven\'t used in the previous week',
+    xpReward: 65,
+    goal: 1,
+    progress: (entries, from) => {
+      const weekAgo = new Date(from)
+      weekAgo.setDate(weekAgo.getDate() - 7)
+      const recentTags = new Set(
+        entries
+          .filter(e => new Date(e.logged_at) >= weekAgo && new Date(e.logged_at) < from)
+          .flatMap(e => e.tags ?? [])
+      )
+      const thisWeekTags = new Set(entriesInPeriod(entries, from).flatMap(e => e.tags ?? []))
+      return [...thisWeekTags].some(t => !recentTags.has(t)) ? 1 : 0
+    },
   },
   {
     id: 'tag_collector_week',
@@ -261,15 +277,18 @@ export const WEEKLY_MISSIONS: MissionDef[] = [
       Math.min(entriesInPeriod(e, from).filter(en => (en.note?.length ?? 0) >= 150).length, 2),
   },
   {
-    id: 'consistent_tagger_week',
+    id: 'emotional_range',
     type: 'weekly',
-    icon: '🧩',
-    title: 'Consistent Tagger',
-    description: 'Add tags to 5 entries this week',
-    xpReward: 55,
-    goal: 5,
-    progress: (e, from) =>
-      Math.min(entriesInPeriod(e, from).filter(en => (en.tags?.length ?? 0) > 0).length, 5),
+    icon: '🌊',
+    title: 'Emotional Range',
+    description: 'Log entries spanning 5+ score points this week (e.g. a 3 and an 8)',
+    xpReward: 60,
+    goal: 1,
+    progress: (e, from) => {
+      const scores = entriesInPeriod(e, from).map(en => en.score)
+      if (scores.length < 2) return 0
+      return Math.max(...scores) - Math.min(...scores) >= 5 ? 1 : 0
+    },
   },
 ]
 
