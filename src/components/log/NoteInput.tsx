@@ -23,7 +23,7 @@ export function NoteInput({ value, onChange }: Props) {
         placeholder="How are you feeling? What's on your mind?"
         value={value}
         onChange={e => onChange(e.target.value)}
-        className="rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-violet-500"
+        className="rounded-xl border border-gray-200 dark:border-white/8 bg-gray-50 dark:bg-[#0e0a1e] text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-600 px-3.5 py-2.5 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-violet-500/60 dark:focus:ring-violet-500/40 transition-colors"
       />
     </div>
   )

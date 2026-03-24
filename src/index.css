@@ -9,8 +9,13 @@
 body {
   margin: 0;
   font-family: system-ui, -apple-system, sans-serif;
-  background: #e8e6f0;
+  background: #ede8f5;
   color: #111827;
+}
+
+.dark body {
+  background: #0c0817;
+  color: #f3f4f6;
 }
 
 .safe-top {
@@ -19,9 +24,4 @@ body {
 
 .safe-bottom {
   padding-bottom: env(safe-area-inset-bottom);
-}
-
-.dark body {
-  background: #0a0a0f;
-  color: #f3f4f6;
 }

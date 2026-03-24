@@ -53,16 +53,23 @@ export function LogPage() {
     }
   }
 
+  const hour = new Date().getHours()
+  const greeting = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening'
+
   return (
     <>
-    <div className="flex flex-col gap-6 px-4 py-6 max-w-lg mx-auto">
+    <div className="flex flex-col gap-5 px-4 pt-6 pb-4 max-w-lg mx-auto">
+
+      {/* Header */}
       <div className="flex items-start justify-between">
         <div>
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">How are you feeling?</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">Tap an emoji to pick your mood</p>
+          <p className="text-sm font-medium text-violet-500 dark:text-violet-400">{greeting}</p>
+          <h2 className="text-2xl font-black text-gray-900 dark:text-gray-100 leading-tight mt-0.5">
+            How are you<br />feeling today?
+          </h2>
         </div>
         {streak > 0 && (
-          <div className="flex flex-col items-center bg-gradient-to-b from-orange-400 to-red-500 rounded-2xl px-3 py-2 shrink-0 shadow-md shadow-orange-400/30">
+          <div className="flex flex-col items-center bg-gradient-to-b from-orange-400 to-red-500 rounded-2xl px-3 py-2 shrink-0 shadow-lg shadow-orange-400/30">
             <span className="text-xl leading-none">🔥</span>
             <span className="text-sm font-black text-white leading-tight">{streak}</span>
             <span className="text-[10px] text-orange-100 font-medium">day{streak !== 1 ? 's' : ''}</span>
@@ -70,13 +77,17 @@ export function LogPage() {
         )}
       </div>
 
-      <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl border border-white dark:border-gray-800 shadow-lg shadow-violet-500/5 p-5 flex flex-col gap-5">
+      {/* Mood picker — standalone, no card */}
+      <div className="bg-white/70 dark:bg-[#1c1530]/70 backdrop-blur-sm rounded-3xl border border-white/80 dark:border-white/6 shadow-lg shadow-violet-500/5 dark:shadow-violet-950/30 p-5">
         <MoodPicker value={score} onChange={setScore} />
+      </div>
 
-        <div className="border-t border-gray-100 dark:border-gray-800" />
-
+      {/* Details card */}
+      <div className="bg-white/70 dark:bg-[#1c1530]/70 backdrop-blur-sm rounded-3xl border border-white/80 dark:border-white/6 shadow-lg shadow-violet-500/5 dark:shadow-violet-950/30 p-5 flex flex-col gap-4">
         <MoodTriggers onSelect={handleTrigger} />
+        <div className="border-t border-gray-100 dark:border-white/5" />
         <NoteInput value={note} onChange={setNote} />
+        <div className="border-t border-gray-100 dark:border-white/5" />
         <TagSelector selected={tags} suggestions={suggestions} onChange={setTags} />
 
         <button
@@ -99,35 +110,35 @@ export function LogPage() {
             </motion.div>
           )}
         </AnimatePresence>
-
-        {error && (
-          <div className="rounded-xl bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 px-4 py-3 text-sm text-red-700 dark:text-red-400">
-            {error}
-          </div>
-        )}
-
-        <AnimatePresence>
-          {saved && (
-            <motion.div
-              initial={{ opacity: 0, y: -8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              className="rounded-xl bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-400 text-center font-medium"
-            >
-              ✓ Entry saved!
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        <button
-          type="button"
-          onClick={handleSave}
-          disabled={score === null || saving}
-          className="w-full rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 disabled:opacity-50 px-4 py-3 text-sm font-semibold text-white shadow-md shadow-violet-500/25 hover:shadow-lg hover:shadow-violet-500/30 transition-all"
-        >
-          {saving ? 'Saving…' : 'Save entry'}
-        </button>
       </div>
+
+      {error && (
+        <div className="rounded-2xl bg-red-50 dark:bg-red-950/60 border border-red-200 dark:border-red-800/50 px-4 py-3 text-sm text-red-700 dark:text-red-400">
+          {error}
+        </div>
+      )}
+
+      <AnimatePresence>
+        {saved && (
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            className="rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/50 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-400 text-center font-semibold"
+          >
+            ✓ Entry saved!
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <button
+        type="button"
+        onClick={handleSave}
+        disabled={score === null || saving}
+        className="w-full rounded-2xl bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 disabled:opacity-40 px-4 py-4 text-base font-bold text-white shadow-lg shadow-violet-500/30 hover:shadow-xl hover:shadow-violet-500/40 transition-all"
+      >
+        {saving ? 'Saving…' : 'Save entry'}
+      </button>
     </div>
 
     <LevelUpModal level={celebrateLevel} onDismiss={dismiss} />

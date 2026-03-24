@@ -22,7 +22,7 @@ export function EntryCard({ entry, onDelete, onEdit }: Props) {
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, x: -40 }}
-      className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl border border-white dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow overflow-hidden flex"
+      className="bg-white/85 dark:bg-[#1c1530]/85 backdrop-blur-sm rounded-2xl border border-white/80 dark:border-white/6 shadow-sm hover:shadow-md dark:hover:shadow-violet-950/40 transition-shadow overflow-hidden flex"
     >
       {/* Colored left accent */}
       <div className="w-1 shrink-0 rounded-l-2xl" style={{ backgroundColor: color }} />
@@ -50,7 +50,7 @@ export function EntryCard({ entry, onDelete, onEdit }: Props) {
             <div className="flex gap-1 shrink-0">
               <button
                 onClick={() => onEdit(entry)}
-                className="rounded-md px-2 py-0.5 text-xs text-gray-400 dark:text-gray-500 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-violet-50 dark:hover:bg-violet-950/50 transition-colors"
+                className="rounded-md px-2 py-0.5 text-xs text-gray-400 dark:text-gray-500 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-violet-50 dark:hover:bg-violet-500/10 transition-colors"
               >
                 Edit
               </button>

@@ -28,7 +28,7 @@ export function HistoryPage() {
   return (
     <div className="flex flex-col gap-4 px-4 py-6 max-w-lg mx-auto">
       <div>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">History</h2>
+        <h2 className="text-2xl font-black text-gray-900 dark:text-gray-100">History</h2>
         <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">{entries.length} entries</p>
       </div>
 
@@ -41,13 +41,13 @@ export function HistoryPage() {
           placeholder="Search notes…"
           value={search}
           onChange={e => setSearch(e.target.value)}
-          className="rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
+          className="rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-[#0e0a1e] text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
         />
         <div className="flex gap-2 overflow-x-auto pb-1">
           <select
             value={filterScore}
             onChange={e => setFilterScore(e.target.value)}
-            className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-2.5 py-1 text-xs shrink-0 focus:outline-none focus:ring-2 focus:ring-violet-500"
+            className="rounded-lg border border-gray-200 dark:border-white/8 bg-gray-50 dark:bg-[#0e0a1e] text-gray-700 dark:text-gray-300 px-2.5 py-1 text-xs shrink-0 focus:outline-none focus:ring-2 focus:ring-violet-500"
           >
             <option value="all">All scores</option>
             <option value="1-3">Low (1–3)</option>
@@ -59,8 +59,8 @@ export function HistoryPage() {
             onClick={() => setFilterTag(null)}
             className={`rounded-full px-3 py-1 text-xs font-medium shrink-0 transition-colors ${
               filterTag === null
-                ? 'bg-violet-100 dark:bg-violet-900 text-violet-700 dark:text-violet-300'
-                : 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'
+                ? 'bg-violet-600 text-white shadow-sm shadow-violet-500/30'
+                : 'bg-white/60 dark:bg-white/6 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/10 border border-gray-200/60 dark:border-white/6'
             }`}
           >
             All tags
@@ -71,8 +71,8 @@ export function HistoryPage() {
               onClick={() => setFilterTag(filterTag === tag ? null : tag)}
               className={`rounded-full px-3 py-1 text-xs font-medium shrink-0 transition-colors ${
                 filterTag === tag
-                  ? 'bg-violet-100 dark:bg-violet-900 text-violet-700 dark:text-violet-300'
-                  : 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'
+                  ? 'bg-violet-600 text-white shadow-sm shadow-violet-500/30'
+                  : 'bg-white/60 dark:bg-white/6 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/10 border border-gray-200/60 dark:border-white/6'
               }`}
             >
               {tag}

@@ -50,14 +50,13 @@ export function TagSelector({ selected, suggestions, onChange }: Props) {
               key={tag}
               type="button"
               onClick={() => toggle(tag)}
-              className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+              className={`rounded-full px-3 py-1 text-xs font-semibold transition-all ${
                 selected.includes(tag)
-                  ? 'bg-violet-100 dark:bg-violet-900 text-violet-700 dark:text-violet-300 ring-1 ring-violet-300 dark:ring-violet-700'
-                  : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'
+                  ? 'bg-violet-600 text-white shadow-sm shadow-violet-500/30'
+                  : 'bg-white/60 dark:bg-white/8 text-gray-600 dark:text-gray-400 hover:bg-violet-50 dark:hover:bg-violet-950/40 hover:text-violet-700 dark:hover:text-violet-300 border border-gray-200/80 dark:border-white/8'
               }`}
             >
-              {selected.includes(tag) && '✓ '}
-              {tag}
+              {selected.includes(tag) ? `✓ ${tag}` : `#${tag}`}
             </button>
           ))}
         </div>
@@ -70,13 +69,13 @@ export function TagSelector({ selected, suggestions, onChange }: Props) {
           value={input}
           onChange={e => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          className="flex-1 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
+          className="flex-1 rounded-xl border border-gray-200 dark:border-white/8 bg-gray-50 dark:bg-[#0e0a1e] text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-600 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500/60"
         />
         <button
           type="button"
           onClick={addNew}
           disabled={!input.trim()}
-          className="rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 px-3 py-1.5 text-sm font-medium disabled:opacity-40 transition-colors"
+          className="rounded-xl bg-violet-600 text-white hover:bg-violet-700 px-3 py-1.5 text-sm font-semibold disabled:opacity-30 transition-colors"
         >
           Add
         </button>

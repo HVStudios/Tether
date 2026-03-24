@@ -33,7 +33,7 @@ export function ChartPage() {
   return (
     <div className="flex flex-col gap-5 px-4 py-6 max-w-lg mx-auto">
       <div>
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Stats</h2>
+        <h2 className="text-2xl font-black text-gray-900 dark:text-gray-100">Stats</h2>
         <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">Your mood journey at a glance</p>
       </div>
 
@@ -55,7 +55,7 @@ export function ChartPage() {
           <RecordsGrid entries={entries} />
 
           {/* Trend chart */}
-          <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl border border-white dark:border-gray-800 shadow-lg p-5">
+          <div className="bg-white/70 dark:bg-[#1c1530]/70 backdrop-blur-sm rounded-3xl border border-white/80 dark:border-white/6 shadow-lg dark:shadow-violet-950/20 p-5">
             <div className="flex items-center justify-between mb-4">
               <div>
                 <h3 className="font-semibold text-gray-900 dark:text-gray-100">Mood trend</h3>
