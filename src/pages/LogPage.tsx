@@ -58,10 +58,10 @@ export function LogPage() {
 
   return (
     <>
-    <div className="flex flex-col gap-5 px-4 pt-6 pb-4 max-w-lg mx-auto">
+    <div className="px-4 md:px-8 pt-6 pb-4 max-w-lg md:max-w-3xl mx-auto">
 
       {/* Header */}
-      <div className="flex items-start justify-between">
+      <div className="flex items-start justify-between mb-5">
         <div>
           <p className="text-sm font-medium text-violet-500 dark:text-violet-400">{greeting}</p>
           <h2 className="text-2xl font-black text-gray-900 dark:text-gray-100 leading-tight mt-0.5">
@@ -77,68 +77,74 @@ export function LogPage() {
         )}
       </div>
 
-      {/* Mood picker — standalone, no card */}
-      <div className="bg-white/70 dark:bg-[#1c1530]/70 backdrop-blur-sm rounded-3xl border border-white/80 dark:border-white/6 shadow-lg shadow-violet-500/5 dark:shadow-violet-950/30 p-5">
-        <MoodPicker value={score} onChange={setScore} />
-      </div>
+      {/* Two-column on desktop */}
+      <div className="flex flex-col gap-5 md:grid md:grid-cols-2 md:items-start">
 
-      {/* Details card */}
-      <div className="bg-white/70 dark:bg-[#1c1530]/70 backdrop-blur-sm rounded-3xl border border-white/80 dark:border-white/6 shadow-lg shadow-violet-500/5 dark:shadow-violet-950/30 p-5 flex flex-col gap-4">
-        <MoodTriggers onSelect={handleTrigger} />
-        <div className="border-t border-gray-100 dark:border-white/5" />
-        <NoteInput value={note} onChange={setNote} />
-        <div className="border-t border-gray-100 dark:border-white/5" />
-        <TagSelector selected={tags} suggestions={suggestions} onChange={setTags} />
-
-        <button
-          type="button"
-          onClick={() => setShowAdvanced(v => !v)}
-          className="text-xs text-gray-400 dark:text-gray-500 hover:text-violet-500 dark:hover:text-violet-400 self-start transition-colors"
-        >
-          {showAdvanced ? '▲ Hide options' : '▼ Set custom time'}
-        </button>
-
-        <AnimatePresence>
-          {showAdvanced && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              style={{ overflow: 'hidden' }}
-            >
-              <DateTimePicker value={loggedAt} onChange={setLoggedAt} />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-
-      {error && (
-        <div className="rounded-2xl bg-red-50 dark:bg-red-950/60 border border-red-200 dark:border-red-800/50 px-4 py-3 text-sm text-red-700 dark:text-red-400">
-          {error}
+        {/* Left: mood picker */}
+        <div className="bg-white/70 dark:bg-[#1c1530]/70 backdrop-blur-sm rounded-3xl border border-white/80 dark:border-white/6 shadow-lg shadow-violet-500/5 dark:shadow-violet-950/30 p-5">
+          <MoodPicker value={score} onChange={setScore} />
         </div>
-      )}
 
-      <AnimatePresence>
-        {saved && (
-          <motion.div
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            className="rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/50 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-400 text-center font-semibold"
+        {/* Right: details + actions */}
+        <div className="flex flex-col gap-4">
+          <div className="bg-white/70 dark:bg-[#1c1530]/70 backdrop-blur-sm rounded-3xl border border-white/80 dark:border-white/6 shadow-lg shadow-violet-500/5 dark:shadow-violet-950/30 p-5 flex flex-col gap-4">
+            <MoodTriggers onSelect={handleTrigger} />
+            <div className="border-t border-gray-100 dark:border-white/5" />
+            <NoteInput value={note} onChange={setNote} />
+            <div className="border-t border-gray-100 dark:border-white/5" />
+            <TagSelector selected={tags} suggestions={suggestions} onChange={setTags} />
+
+            <button
+              type="button"
+              onClick={() => setShowAdvanced(v => !v)}
+              className="text-xs text-gray-400 dark:text-gray-500 hover:text-violet-500 dark:hover:text-violet-400 self-start transition-colors"
+            >
+              {showAdvanced ? '▲ Hide options' : '▼ Set custom time'}
+            </button>
+
+            <AnimatePresence>
+              {showAdvanced && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  style={{ overflow: 'hidden' }}
+                >
+                  <DateTimePicker value={loggedAt} onChange={setLoggedAt} />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {error && (
+            <div className="rounded-2xl bg-red-50 dark:bg-red-950/60 border border-red-200 dark:border-red-800/50 px-4 py-3 text-sm text-red-700 dark:text-red-400">
+              {error}
+            </div>
+          )}
+
+          <AnimatePresence>
+            {saved && (
+              <motion.div
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                className="rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/50 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-400 text-center font-semibold"
+              >
+                ✓ Entry saved!
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          <button
+            type="button"
+            onClick={handleSave}
+            disabled={score === null || saving}
+            className="w-full rounded-2xl bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 disabled:opacity-40 px-4 py-4 text-base font-bold text-white shadow-lg shadow-violet-500/30 hover:shadow-xl hover:shadow-violet-500/40 transition-all"
           >
-            ✓ Entry saved!
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <button
-        type="button"
-        onClick={handleSave}
-        disabled={score === null || saving}
-        className="w-full rounded-2xl bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 disabled:opacity-40 px-4 py-4 text-base font-bold text-white shadow-lg shadow-violet-500/30 hover:shadow-xl hover:shadow-violet-500/40 transition-all"
-      >
-        {saving ? 'Saving…' : 'Save entry'}
-      </button>
+            {saving ? 'Saving…' : 'Save entry'}
+          </button>
+        </div>
+      </div>
     </div>
 
     <LevelUpModal level={celebrateLevel} onDismiss={dismiss} />
