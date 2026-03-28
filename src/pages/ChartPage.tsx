@@ -10,6 +10,7 @@ import { DayOfWeekChart } from '../components/stats/DayOfWeekChart'
 import { TagUsageChart } from '../components/stats/TagUsageChart'
 import { TagCorrelations } from '../components/stats/TagCorrelations'
 import { MissionsCard } from '../components/stats/MissionsCard'
+import { PeriodSummaryCard } from '../components/stats/PeriodSummaryCard'
 import { getMood } from '../utils/moodEmoji'
 
 const RANGE_OPTIONS = [
@@ -53,6 +54,8 @@ export function ChartPage() {
           <LevelCard entries={entries} />
 
           <RecordsGrid entries={entries} />
+
+          <PeriodSummaryCard entries={entries} />
 
           {/* Trend chart */}
           <div className="bg-white/70 dark:bg-[#1c1530]/70 backdrop-blur-sm rounded-3xl border border-white/80 dark:border-white/6 shadow-lg dark:shadow-violet-950/20 p-5">
