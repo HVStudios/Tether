@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import { LoginForm } from '../components/auth/LoginForm'
 import { SignupForm } from '../components/auth/SignupForm'
 import { useAuthContext } from '../context/AuthContext'
+import { Mark, Wordmark } from '../components/Mark'
+import { skyColors } from '../lib/skies'
+import { useTheme } from '../context/ThemeContext'
 
 type Tab = 'login' | 'signup'
 
@@ -10,65 +13,80 @@ export function AuthPage() {
   const [tab, setTab] = useState<Tab>('login')
   const { continueAsGuest } = useAuthContext()
   const navigate = useNavigate()
+  const { theme } = useTheme()
+  const isDark = theme === 'dark'
 
   function handleGuest() {
     continueAsGuest()
     navigate('/log')
   }
 
+  const [a, b] = skyColors(8, isDark)
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-300/60 via-violet-200/40 to-purple-200/30 dark:from-[#0a0a0f] dark:via-violet-950/30 dark:to-[#0a0a0f] px-4 relative overflow-hidden">
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-violet-500/15 dark:bg-violet-600/10 rounded-full blur-3xl -translate-y-1/2 pointer-events-none" />
-      <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-purple-500/15 dark:bg-purple-700/10 rounded-full blur-3xl translate-y-1/2 pointer-events-none" />
-      <div className="absolute top-1/2 left-0 w-64 h-64 bg-fuchsia-500/10 dark:bg-fuchsia-800/10 rounded-full blur-3xl -translate-x-1/2 pointer-events-none" />
+    <div className="relative min-h-screen bg-bg dark:bg-d-bg overflow-hidden">
+      {/* Atmospheric gradient at top */}
+      <div
+        aria-hidden
+        className="absolute top-0 left-0 right-0 h-[55%] pointer-events-none"
+        style={{
+          background: `linear-gradient(180deg, ${a} 0%, ${b} 50%, transparent 100%)`,
+          opacity: isDark ? 0.4 : 0.55,
+        }}
+      />
 
-      <div className="w-full max-w-sm relative">
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-500 to-purple-600 shadow-lg shadow-violet-500/30 mb-4">
-            <span className="text-3xl font-black text-white">T</span>
-          </div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 dark:from-violet-400 dark:to-purple-400 bg-clip-text text-transparent">
-            Tether
+      <div className="relative z-10 min-h-screen flex flex-col px-6 py-10 max-w-md mx-auto">
+        <div className="flex items-center gap-2.5">
+          <Mark size={32} />
+          <Wordmark size={22} />
+        </div>
+
+        <div className="flex-1 flex flex-col justify-center -mt-5">
+          <p className="font-mono text-[11px] tracking-[0.1em] uppercase text-ink-mute dark:text-d-ink-mute">
+            Welcome back
+          </p>
+          <h1
+            className="text-[34px] font-semibold leading-[1.05] text-ink dark:text-d-ink mt-2 mb-6"
+            style={{ letterSpacing: '-0.025em' }}
+          >
+            Sign in, or<br />begin a new sky.
           </h1>
-          <p className="mt-1.5 text-sm text-gray-500 dark:text-gray-400">Track how you feel, day by day</p>
-        </div>
 
-        <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-xl shadow-violet-500/10 border border-white dark:border-gray-800 p-6">
-          <div className="flex rounded-xl bg-gray-100 dark:bg-gray-800 p-1 mb-6">
-            <button
-              onClick={() => setTab('login')}
-              className={`flex-1 rounded-lg py-1.5 text-sm font-medium transition-all ${
-                tab === 'login'
-                  ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm'
-                  : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
-              }`}
-            >
-              Log in
-            </button>
-            <button
-              onClick={() => setTab('signup')}
-              className={`flex-1 rounded-lg py-1.5 text-sm font-medium transition-all ${
-                tab === 'signup'
-                  ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm'
-                  : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
-              }`}
-            >
-              Sign up
-            </button>
+          <div className="bg-card dark:bg-d-card rounded-3xl p-5 border border-rule dark:border-d-rule shadow-[0_8px_28px_rgba(31,36,51,0.06)] dark:shadow-none">
+            <div className="flex bg-bg2 dark:bg-d-bg2 rounded-full p-1 mb-4">
+              <button
+                onClick={() => setTab('login')}
+                className={`flex-1 rounded-full py-1.5 text-[13px] font-medium transition-all ${
+                  tab === 'login'
+                    ? 'bg-card dark:bg-d-card text-ink dark:text-d-ink shadow-sm'
+                    : 'text-ink-mute dark:text-d-ink-mute'
+                }`}
+              >
+                Sign in
+              </button>
+              <button
+                onClick={() => setTab('signup')}
+                className={`flex-1 rounded-full py-1.5 text-[13px] font-medium transition-all ${
+                  tab === 'signup'
+                    ? 'bg-card dark:bg-d-card text-ink dark:text-d-ink shadow-sm'
+                    : 'text-ink-mute dark:text-d-ink-mute'
+                }`}
+              >
+                Sign up
+              </button>
+            </div>
+
+            {tab === 'login' ? <LoginForm /> : <SignupForm />}
           </div>
 
-          {tab === 'login' ? <LoginForm /> : <SignupForm />}
-        </div>
-
-        <div className="mt-4 text-center">
           <button
             onClick={handleGuest}
-            className="text-sm text-gray-500 dark:text-gray-400 hover:text-violet-600 dark:hover:text-violet-400 transition-colors underline underline-offset-2"
+            className="mt-4 rounded-xl border border-rule dark:border-d-rule bg-transparent py-2.5 text-[13px] font-medium text-ink2 dark:text-d-ink2 hover:bg-card dark:hover:bg-d-card transition-colors"
           >
             Continue as guest
           </button>
-          <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
-            Your entries are saved locally. Sign up later to sync across devices.
+          <p className="mt-2 text-center text-[12px] text-ink-mute dark:text-d-ink-mute">
+            Entries stay on this device. Sign up later to sync.
           </p>
         </div>
       </div>

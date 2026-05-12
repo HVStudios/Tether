@@ -1,71 +1,62 @@
-import { motion } from 'framer-motion'
 import { useTotalXP } from '../../hooks/useTotalXP'
+import { skyColors } from '../../lib/skies'
+import { useTheme } from '../../context/ThemeContext'
 import type { MoodEntry } from '../../lib/types'
-
-const LEVEL_COLORS = [
-  'from-gray-400 to-gray-500',       // 1
-  'from-green-400 to-emerald-500',   // 2
-  'from-teal-400 to-cyan-500',       // 3
-  'from-blue-400 to-indigo-500',     // 4
-  'from-violet-400 to-purple-500',   // 5
-  'from-purple-500 to-fuchsia-500',  // 6
-  'from-fuchsia-500 to-pink-500',    // 7
-  'from-pink-500 to-rose-500',       // 8
-  'from-orange-400 to-amber-500',    // 9
-  'from-yellow-400 to-amber-400',    // 10
-]
 
 interface Props {
   entries: MoodEntry[]
 }
 
 export function LevelCard({ entries }: Props) {
+  const { theme } = useTheme()
+  const isDark = theme === 'dark'
   const { totalXP, currentLevel, nextLevel, xpIntoLevel, xpForLevel, progress } = useTotalXP(entries)
-  const gradient = LEVEL_COLORS[currentLevel.level - 1]
+
+  // Use a sky gradient tied to current level (1-10 → sky 1-10)
+  const baseN = currentLevel.level
+  const [a] = skyColors(baseN, isDark)
+  const [, b] = skyColors(Math.min(10, baseN + 1), isDark)
+  const grad = `linear-gradient(135deg, ${a}, ${b})`
 
   return (
-    <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl border border-white dark:border-gray-800 shadow-lg p-5">
-      <div className="flex items-center gap-4">
-        <div className={`bg-gradient-to-br ${gradient} rounded-2xl w-14 h-14 flex items-center justify-center shadow-md shrink-0`}>
-          <span className="text-white font-black text-xl">{currentLevel.level}</span>
-        </div>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-baseline justify-between gap-2">
-            <p className="font-bold text-gray-900 dark:text-gray-100 text-lg leading-tight">
-              {currentLevel.name}
-            </p>
-            <p className="text-xs text-gray-400 dark:text-gray-500 shrink-0">
-              {totalXP} XP total
-            </p>
-          </div>
-          <div className="mt-2 h-2 rounded-full bg-gray-100 dark:bg-gray-800 overflow-hidden">
-            <motion.div
-              className={`h-full rounded-full bg-gradient-to-r ${gradient}`}
-              initial={{ width: 0 }}
-              animate={{ width: `${progress * 100}%` }}
-              transition={{ duration: 0.8, ease: 'easeOut' }}
-            />
-          </div>
-          <p className="mt-1 text-xs text-gray-400 dark:text-gray-500">
-            {nextLevel
-              ? `${xpIntoLevel} / ${xpForLevel} XP → ${nextLevel.name}`
-              : 'Max level reached'}
+    <div
+      className="relative rounded-3xl p-5 text-white overflow-hidden"
+      style={{ background: grad, boxShadow: `0 12px 36px ${a}40` }}
+    >
+      <div className="absolute -top-6 -right-6 w-32 h-32 rounded-full bg-white/15 pointer-events-none" />
+
+      <div className="relative flex items-start justify-between gap-4">
+        <div className="min-w-0">
+          <p className="font-mono text-[10px] tracking-[0.1em] uppercase opacity-85">
+            Level {currentLevel.level} · {totalXP} xp
           </p>
+          <p
+            className="text-[26px] md:text-[28px] font-semibold mt-1 leading-tight"
+            style={{ letterSpacing: '-0.02em' }}
+          >
+            {currentLevel.name}
+          </p>
+        </div>
+        <div
+          className="w-14 h-14 rounded-2xl flex items-center justify-center font-bold text-2xl shrink-0"
+          style={{ background: 'rgba(255,255,255,0.22)' }}
+        >
+          {currentLevel.level}
         </div>
       </div>
 
-      <div className="mt-4 grid grid-cols-3 gap-3 border-t border-gray-100 dark:border-gray-800 pt-4">
-        {[
-          { label: 'Entry', value: '+10 XP' },
-          { label: 'Note', value: '+5 XP' },
-          { label: 'Tag', value: '+2 XP' },
-        ].map(({ label, value }) => (
-          <div key={label} className="text-center">
-            <p className="text-xs font-semibold text-gray-500 dark:text-gray-400">{label}</p>
-            <p className="text-xs text-violet-600 dark:text-violet-400 font-bold">{value}</p>
-          </div>
-        ))}
+      <div className="relative mt-4">
+        <div className="h-1.5 bg-white/25 rounded-full overflow-hidden">
+          <div className="h-full bg-white rounded-full" style={{ width: `${progress * 100}%` }} />
+        </div>
+        <div className="flex justify-between mt-2 font-mono text-[11px] opacity-85">
+          <span>
+            {xpIntoLevel} / {xpForLevel}
+          </span>
+          <span>{nextLevel ? `→ ${nextLevel.name}` : 'Max level'}</span>
+        </div>
       </div>
+
     </div>
   )
 }

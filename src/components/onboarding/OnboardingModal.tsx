@@ -1,32 +1,41 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { SkyChip } from '../SkyChip'
+import { skyColors } from '../../lib/skies'
+import { useTheme } from '../../context/ThemeContext'
 
 const STORAGE_KEY = 'tether_onboarded'
 
 const STEPS = [
   {
-    emoji: '🌿',
-    title: 'Welcome to Tether',
-    body: 'Your personal mood journal. Check in daily to build self-awareness and spot patterns in how you feel.',
+    n: 7,
+    eyebrow: 'Welcome',
+    title: 'Track how you feel,\nday by day.',
+    body: 'Tether turns each day into a sky — a quick reading of your inner weather.',
   },
   {
-    emoji: '😊',
-    title: 'Log your mood',
-    body: 'Pick a score from 1–10, write a note about your day, and add tags like #work or #exercise to organise entries.',
+    n: 4,
+    eyebrow: 'How it works',
+    title: 'Pick a sky.\nWrite a note.',
+    body: 'Storm to aurora — pick the atmosphere that fits, add a sentence about your day.',
   },
   {
-    emoji: '🏆',
-    title: 'Earn XP & level up',
-    body: 'Every entry earns XP. Write notes, add tags, and keep your streak going to level up from Newcomer to Transcendent.',
+    n: 9,
+    eyebrow: 'Patterns',
+    title: 'Your forecast,\nover time.',
+    body: 'After a week, your trends emerge — which days lift you, which tags weigh you down.',
   },
   {
-    emoji: '📊',
-    title: 'Discover your trends',
-    body: 'The Stats tab shows your mood over time, which days you feel best, which tags lift your mood, and your achievements.',
+    n: 10,
+    eyebrow: 'Begin',
+    title: 'Long horizons\nfavor the consistent.',
+    body: "Build a streak. Earn XP. Reach Transcendent. Or just check in — that's enough.",
   },
 ]
 
 export function OnboardingModal() {
+  const { theme } = useTheme()
+  const isDark = theme === 'dark'
   const [step, setStep] = useState(0)
   const [visible, setVisible] = useState(
     () => localStorage.getItem(STORAGE_KEY) !== '1'
@@ -39,6 +48,7 @@ export function OnboardingModal() {
 
   const isLast = step === STEPS.length - 1
   const current = STEPS[step]
+  const [a, b] = skyColors(current.n, isDark)
 
   return (
     <AnimatePresence>
@@ -47,61 +57,77 @@ export function OnboardingModal() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-black/50 backdrop-blur-md"
         >
           <motion.div
             key={step}
-            initial={{ opacity: 0, y: 24, scale: 0.97 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -12, scale: 0.97 }}
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
             transition={{ type: 'spring', damping: 26, stiffness: 300 }}
-            className="w-full max-w-sm bg-white dark:bg-gray-900 rounded-3xl border border-white dark:border-gray-800 shadow-2xl p-8 text-center"
+            className="w-full max-w-sm bg-card dark:bg-d-card rounded-3xl border border-rule dark:border-d-rule p-7"
           >
-            <div className="text-6xl mb-5">{current.emoji}</div>
+            <div className="flex justify-center mb-6">
+              <SkyChip n={current.n} size={96} radius={24} />
+            </div>
 
-            <h2 className="text-xl font-black text-gray-900 dark:text-gray-100 mb-2">
+            <p className="font-mono text-[11px] tracking-[0.1em] uppercase text-ink-mute dark:text-d-ink-mute">
+              {current.eyebrow}
+            </p>
+            <h2
+              className="text-[28px] font-semibold leading-[1.05] text-ink dark:text-d-ink mt-1.5 whitespace-pre-line"
+              style={{ letterSpacing: '-0.03em' }}
+            >
               {current.title}
             </h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-8">
+            <p className="text-[14.5px] leading-[1.5] text-ink2 dark:text-d-ink2 mt-3">
               {current.body}
             </p>
 
-            {/* Step dots */}
-            <div className="flex justify-center gap-1.5 mb-6">
+            <div className="flex items-center gap-1.5 mt-6">
               {STEPS.map((_, i) => (
-                <div
+                <span
                   key={i}
-                  className={`rounded-full transition-all duration-300 ${
-                    i === step
-                      ? 'w-5 h-1.5 bg-violet-600'
-                      : 'w-1.5 h-1.5 bg-gray-200 dark:bg-gray-700'
-                  }`}
+                  className="h-1.5 rounded-full transition-all duration-300"
+                  style={{
+                    width: i === step ? 24 : 6,
+                    background: i <= step
+                      ? (isDark ? '#f0f1f6' : '#1f2433')
+                      : (isDark ? '#3e424e' : '#b8bcc7'),
+                  }}
                 />
               ))}
+              <span className="ml-auto font-mono text-[10px] text-ink-mute dark:text-d-ink-mute">
+                {step + 1}/{STEPS.length}
+              </span>
             </div>
 
-            <div className="flex gap-2">
+            <div className="flex gap-2 mt-5">
               {step > 0 && (
                 <button
                   onClick={() => setStep(s => s - 1)}
-                  className="flex-1 py-3 rounded-2xl border border-gray-200 dark:border-gray-700 text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                  className="flex-1 py-3 rounded-2xl border border-rule dark:border-d-rule text-[13px] font-medium text-ink2 dark:text-d-ink2 hover:bg-bg2 dark:hover:bg-d-bg2 transition-colors"
                 >
                   Back
                 </button>
               )}
-              {!isLast && step === 0 && (
+              {step === 0 && (
                 <button
                   onClick={finish}
-                  className="text-sm text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors px-3"
+                  className="px-4 py-3 text-[13px] text-ink-mute dark:text-d-ink-mute hover:text-ink dark:hover:text-d-ink transition-colors"
                 >
                   Skip
                 </button>
               )}
               <button
                 onClick={isLast ? finish : () => setStep(s => s + 1)}
-                className="flex-1 py-3 rounded-2xl bg-gradient-to-r from-violet-600 to-purple-600 text-white font-bold text-sm shadow-md hover:opacity-90 transition-opacity"
+                className="flex-1 py-3 rounded-2xl text-white text-[14px] font-semibold transition-opacity hover:opacity-95"
+                style={{
+                  background: `linear-gradient(135deg, ${a}, ${b})`,
+                  boxShadow: `0 10px 24px ${a}40`,
+                }}
               >
-                {isLast ? "Let's go 🚀" : 'Next'}
+                {isLast ? 'Begin →' : 'Continue →'}
               </button>
             </div>
           </motion.div>

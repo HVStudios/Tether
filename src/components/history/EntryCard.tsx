@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import type { MoodEntry } from '../../lib/types'
-import { getMood } from '../../utils/moodEmoji'
+import { sky } from '../../lib/skies'
+import { SkyChip } from '../SkyChip'
 import { formatEntryDate } from '../../utils/formatDate'
 
 interface Props {
@@ -13,7 +14,7 @@ interface Props {
 export function EntryCard({ entry, onDelete, onEdit }: Props) {
   const [expanded, setExpanded] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState(false)
-  const { emoji, label, color } = getMood(entry.score)
+  const s = sky(entry.score)
   const longNote = entry.note && entry.note.length > 120
 
   return (
@@ -22,93 +23,89 @@ export function EntryCard({ entry, onDelete, onEdit }: Props) {
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, x: -40 }}
-      className="bg-white/85 dark:bg-[#1c1530]/85 backdrop-blur-sm rounded-2xl border border-white/80 dark:border-white/6 shadow-sm hover:shadow-md dark:hover:shadow-violet-950/40 transition-shadow overflow-hidden flex"
+      className="bg-card dark:bg-d-card rounded-3xl border border-rule dark:border-d-rule p-4 flex gap-3.5 shadow-[0_1px_0_rgba(31,36,51,0.04)] dark:shadow-none"
     >
-      {/* Colored left accent */}
-      <div className="w-1 shrink-0 rounded-l-2xl" style={{ backgroundColor: color }} />
+      <SkyChip n={entry.score} size={60} radius={18} />
 
-      <div className="flex gap-3 p-4 flex-1 min-w-0">
-        {/* Emoji + score badge */}
-        <div className="flex flex-col items-center gap-1 shrink-0">
-          <div
-            className="w-11 h-11 rounded-xl flex items-center justify-center text-2xl shadow-sm"
-            style={{ backgroundColor: `${color}18` }}
-          >
-            <span role="img" aria-label={label}>{emoji}</span>
-          </div>
-          <span
-            className="text-[10px] font-bold px-1.5 py-0.5 rounded-full text-white leading-none"
-            style={{ backgroundColor: color }}
-          >
-            {entry.score}
-          </span>
-        </div>
-
-        <div className="flex flex-col gap-1.5 min-w-0 flex-1">
-          <div className="flex items-center justify-between gap-2">
-            <p className="text-xs text-gray-400 dark:text-gray-500">{formatEntryDate(entry.logged_at)}</p>
-            <div className="flex gap-1 shrink-0">
-              <button
-                onClick={() => onEdit(entry)}
-                className="rounded-md px-2 py-0.5 text-xs text-gray-400 dark:text-gray-500 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-violet-50 dark:hover:bg-violet-500/10 transition-colors"
-              >
-                Edit
-              </button>
-              {confirmDelete ? (
-                <div className="flex gap-1">
-                  <button
-                    onClick={() => onDelete(entry.id)}
-                    className="rounded-md px-2 py-0.5 text-xs text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950 transition-colors font-medium"
-                  >
-                    Delete
-                  </button>
-                  <button
-                    onClick={() => setConfirmDelete(false)}
-                    className="rounded-md px-2 py-0.5 text-xs text-gray-400 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              ) : (
-                <button
-                  onClick={() => setConfirmDelete(true)}
-                  className="rounded-md px-2 py-0.5 text-xs text-gray-300 dark:text-gray-600 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/50 transition-colors"
-                >
-                  ✕
-                </button>
-              )}
+      <div className="flex-1 min-w-0">
+        <div className="flex items-baseline justify-between gap-2">
+          <div className="min-w-0">
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-[22px] font-semibold text-ink dark:text-d-ink leading-none" style={{ letterSpacing: '-0.02em' }}>
+                {entry.score}
+              </span>
+              <span className="text-[13px] text-ink2 dark:text-d-ink2 capitalize">{s.label}</span>
             </div>
-          </div>
-
-          {entry.note && (
-            <p className={`text-sm text-gray-700 dark:text-gray-300 leading-relaxed ${!expanded && longNote ? 'line-clamp-3' : ''}`}>
-              {entry.note}
+            <p className="font-mono text-[10px] text-ink-mute dark:text-d-ink-mute mt-0.5">
+              {formatEntryDate(entry.logged_at)}
             </p>
-          )}
+          </div>
 
-          {longNote && (
+          <div className="flex gap-1 shrink-0">
             <button
-              onClick={() => setExpanded(e => !e)}
-              className="text-xs text-violet-600 dark:text-violet-400 hover:text-violet-700 self-start font-medium"
+              onClick={() => onEdit(entry)}
+              className="rounded-md px-2 py-0.5 text-[11px] text-ink-mute dark:text-d-ink-mute hover:text-ink dark:hover:text-d-ink transition-colors"
             >
-              {expanded ? 'Show less' : 'Show more'}
+              Edit
             </button>
-          )}
-
-          {entry.tags.length > 0 && (
-            <div className="flex flex-wrap gap-1 mt-0.5">
-              {entry.tags.map(tag => (
-                <span
-                  key={tag}
-                  className="rounded-full px-2.5 py-0.5 text-xs font-medium"
-                  style={{ backgroundColor: `${color}15`, color }}
+            {confirmDelete ? (
+              <>
+                <button
+                  onClick={() => onDelete(entry.id)}
+                  className="rounded-md px-2 py-0.5 text-[11px] font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors"
                 >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          )}
+                  Delete
+                </button>
+                <button
+                  onClick={() => setConfirmDelete(false)}
+                  className="rounded-md px-2 py-0.5 text-[11px] text-ink-mute dark:text-d-ink-mute hover:text-ink dark:hover:text-d-ink transition-colors"
+                >
+                  Cancel
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={() => setConfirmDelete(true)}
+                className="rounded-md px-1.5 py-0.5 text-[11px] text-ink-dim dark:text-d-ink-dim hover:text-red-500 dark:hover:text-red-400 transition-colors"
+                aria-label="Delete"
+              >
+                ✕
+              </button>
+            )}
+          </div>
         </div>
+
+        {entry.note && (
+          <p
+            className={`mt-1.5 text-[13.5px] leading-[1.5] text-ink2 dark:text-d-ink2 ${
+              !expanded && longNote ? 'line-clamp-3' : ''
+            }`}
+          >
+            {entry.note}
+          </p>
+        )}
+
+        {longNote && (
+          <button
+            onClick={() => setExpanded(e => !e)}
+            className="mt-1 text-[11px] font-medium text-accent dark:text-d-accent hover:underline"
+          >
+            {expanded ? 'Show less' : 'Show more'}
+          </button>
+        )}
+
+        {entry.tags.length > 0 && (
+          <div className="flex flex-wrap gap-1 mt-2">
+            {entry.tags.map(tag => (
+              <span
+                key={tag}
+                className="rounded-full px-2 py-0.5 text-[11px] font-medium bg-bg2 dark:bg-d-bg2 text-ink2 dark:text-d-ink2"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
     </motion.div>
   )

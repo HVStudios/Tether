@@ -12,8 +12,8 @@ function AuthGuard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-violet-600 border-t-transparent" />
+      <div className="min-h-screen flex items-center justify-center bg-bg dark:bg-d-bg">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-ink/20 dark:border-d-ink/20 border-t-ink dark:border-t-d-ink" />
       </div>
     )
   }

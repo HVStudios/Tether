@@ -1,24 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
     <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#7c3aed"/>
-      <stop offset="100%" stop-color="#c026d3"/>
+      <stop offset="0%" stop-color="#ee9a64"/>
+      <stop offset="100%" stop-color="#f6c08a"/>
     </linearGradient>
-    <linearGradient id="shine" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.18"/>
-      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
-    </linearGradient>
+    <clipPath id="clip">
+      <rect width="64" height="64" rx="18"/>
+    </clipPath>
   </defs>
 
-  <!-- Background rounded square -->
-  <rect width="64" height="64" rx="16" fill="url(#bg)"/>
-
-  <!-- Inner highlight for depth -->
-  <rect width="64" height="32" rx="16" fill="url(#shine)"/>
-
-  <!-- Bold T lettermark -->
-  <!-- Horizontal bar -->
-  <rect x="14" y="17" width="36" height="8" rx="4" fill="white"/>
-  <!-- Vertical stem -->
-  <rect x="28" y="17" width="8" height="30" rx="4" fill="white"/>
+  <g clip-path="url(#clip)">
+    <rect width="64" height="64" rx="18" fill="url(#bg)"/>
+    <!-- horizon -->
+    <path d="M-3 44 Q 32 35 67 44 L 67 67 L -3 67 Z" fill="#1f2433" opacity="0.18"/>
+    <!-- sun -->
+    <circle cx="32" cy="29" r="10" fill="#ffffff" opacity="0.88"/>
+  </g>
 </svg>

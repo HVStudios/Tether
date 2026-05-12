@@ -1,12 +1,11 @@
 import { format } from 'date-fns'
 
 interface Props {
-  value: string // ISO string
+  value: string
   onChange: (iso: string) => void
 }
 
 export function DateTimePicker({ value, onChange }: Props) {
-  // datetime-local input requires "yyyy-MM-ddTHH:mm" format
   const localValue = value ? format(new Date(value), "yyyy-MM-dd'T'HH:mm") : ''
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -15,8 +14,8 @@ export function DateTimePicker({ value, onChange }: Props) {
   }
 
   return (
-    <div className="flex flex-col gap-1">
-      <label className="text-sm font-medium text-gray-700 dark:text-gray-300" htmlFor="logged-at">
+    <div className="flex flex-col gap-1.5">
+      <label htmlFor="logged-at" className="font-mono text-[10px] tracking-[0.1em] uppercase text-ink-mute dark:text-d-ink-mute">
         Date & time
       </label>
       <input
@@ -25,7 +24,7 @@ export function DateTimePicker({ value, onChange }: Props) {
         value={localValue}
         max={format(new Date(), "yyyy-MM-dd'T'HH:mm")}
         onChange={handleChange}
-        className="rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
+        className="rounded-xl border border-rule dark:border-d-rule bg-bg2 dark:bg-d-bg2 text-ink dark:text-d-ink px-3 py-2 text-[13px] outline-none focus:border-ink/40 dark:focus:border-d-ink/30"
       />
     </div>
   )

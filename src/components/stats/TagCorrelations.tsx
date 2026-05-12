@@ -1,3 +1,5 @@
+import { skyColors } from '../../lib/skies'
+import { useTheme } from '../../context/ThemeContext'
 import type { MoodEntry } from '../../lib/types'
 
 interface Props {
@@ -5,11 +7,13 @@ interface Props {
 }
 
 export function TagCorrelations({ entries }: Props) {
+  const { theme } = useTheme()
+  const isDark = theme === 'dark'
+
   if (entries.length < 3) return null
 
   const overallAvg = entries.reduce((s, e) => s + e.score, 0) / entries.length
 
-  // For each tag: avg mood on entries that have it
   const tagTotals = new Map<string, { sum: number; count: number }>()
   for (const e of entries) {
     for (const t of e.tags ?? []) {
@@ -33,46 +37,60 @@ export function TagCorrelations({ entries }: Props) {
 
   if (correlations.length === 0) return null
 
+  const max = Math.max(...correlations.map(c => Math.abs(c.delta)), 1)
+  const [posA, posB] = skyColors(9, isDark)
+  const [negA, negB] = skyColors(2, isDark)
+
   return (
-    <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl border border-white dark:border-gray-800 shadow-lg p-5">
-      <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">Tag Correlations</h3>
-      <p className="text-xs text-gray-400 dark:text-gray-500 mb-4">
-        How each tag affects your average mood (vs {Math.round(overallAvg * 10) / 10} overall)
+    <div className="bg-card dark:bg-d-card rounded-3xl border border-rule dark:border-d-rule p-5">
+      <p className="font-mono text-[10px] tracking-[0.08em] uppercase text-ink-mute dark:text-d-ink-mute">
+        What lifts you
+      </p>
+      <p className="text-[12px] text-ink2 dark:text-d-ink2 mb-3">
+        vs. your overall average ({Math.round(overallAvg * 10) / 10})
       </p>
 
-      <div className="flex flex-col gap-2">
-        {correlations.map(({ tag, avg, delta, count }) => {
-          const positive = delta >= 0
+      <div className="flex flex-col gap-1.5">
+        {correlations.map(({ tag, delta, count }) => {
+          const pos = delta >= 0
+          const pct = (Math.abs(delta) / max) * 100
           return (
-            <div key={tag} className="flex items-center gap-3">
-              <span className="w-20 text-xs font-medium text-gray-700 dark:text-gray-300 truncate shrink-0">
-                #{tag}
+            <div
+              key={tag}
+              className="grid items-center gap-2"
+              style={{ gridTemplateColumns: '72px 1fr 1fr 56px' }}
+            >
+              <span className="text-[12px] text-ink dark:text-d-ink font-medium truncate">
+                {tag}
               </span>
-              <div className="flex-1 flex items-center gap-1.5">
-                {/* Centre line */}
-                <div className="flex-1 relative h-5 flex items-center">
-                  <div className="absolute inset-x-0 h-px bg-gray-200 dark:bg-gray-700" />
-                  <div className="absolute left-1/2 w-px h-3 bg-gray-300 dark:bg-gray-600" />
-                  {/* Bar extending left or right from centre */}
+              <div className="h-2 flex justify-end">
+                {!pos && (
                   <div
-                    className="absolute h-4 rounded-full"
+                    className="h-full rounded-full"
                     style={{
-                      left: positive ? '50%' : `${50 + (delta / 10) * 50}%`,
-                      width: `${Math.abs(delta) / 10 * 50}%`,
-                      background: positive
-                        ? 'linear-gradient(to right, #7c3aed, #a855f7)'
-                        : 'linear-gradient(to left, #ef4444, #f97316)',
-                      minWidth: Math.abs(delta) > 0 ? '4px' : '0',
+                      width: `${pct}%`,
+                      background: `linear-gradient(90deg, ${negB}, ${negA})`,
                     }}
                   />
-                </div>
+                )}
               </div>
-              <div className="shrink-0 text-right w-20">
-                <span className={`text-xs font-bold ${positive ? 'text-violet-600 dark:text-violet-400' : 'text-red-500 dark:text-red-400'}`}>
-                  {positive ? '+' : ''}{delta}
+              <div className="h-2">
+                {pos && (
+                  <div
+                    className="h-full rounded-full"
+                    style={{
+                      width: `${pct}%`,
+                      background: `linear-gradient(90deg, ${posA}, ${posB})`,
+                    }}
+                  />
+                )}
+              </div>
+              <div className="text-right">
+                <span className={`font-mono text-[11px] font-semibold ${pos ? 'text-ink dark:text-d-ink' : 'text-ink2 dark:text-d-ink2'}`}>
+                  {pos ? '+' : ''}{delta}
                 </span>
-                <span className="text-[10px] text-gray-400 dark:text-gray-500 ml-1">
-                  ({avg}/10, {count}×)
+                <span className="font-mono text-[9px] text-ink-mute dark:text-d-ink-mute ml-1">
+                  ({count}×)
                 </span>
               </div>
             </div>

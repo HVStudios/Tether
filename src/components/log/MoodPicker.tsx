@@ -1,57 +1,66 @@
-import { getMood } from '../../utils/moodEmoji'
+import { sky, SKIES, skyColors } from '../../lib/skies'
+import { SkyChip } from '../SkyChip'
+import { useTheme } from '../../context/ThemeContext'
 
 interface Props {
   value: number | null
   onChange: (score: number) => void
 }
 
-const SCORES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-
 export function MoodPicker({ value, onChange }: Props) {
-  const selected = value !== null ? getMood(value) : null
+  const { theme } = useTheme()
+  const isDark = theme === 'dark'
+  const s = value !== null ? sky(value) : null
 
   return (
-    <div className="flex flex-col items-center gap-5">
-      {/* Large selected display */}
-      <div className="h-24 flex flex-col items-center justify-center gap-1.5">
-        {selected ? (
-          <>
-            <span className="text-6xl leading-none drop-shadow-sm animate-[scale-in_0.15s_ease-out]">{selected.emoji}</span>
-            <span
-              className="text-sm font-bold px-3 py-0.5 rounded-full text-white"
-              style={{ backgroundColor: selected.color }}
-            >
-              {selected.label}
-            </span>
-          </>
-        ) : (
-          <p className="text-gray-400 dark:text-gray-500 text-sm text-center leading-relaxed">
-            How are you feeling?<br />
-            <span className="text-xs opacity-70">Tap an emoji below</span>
-          </p>
-        )}
-      </div>
+    <div className="flex flex-col gap-4">
+      {/* Selected reading */}
+      {s ? (
+        <div className="flex items-center gap-4">
+          <SkyChip n={value!} size={84} radius={22} />
+          <div className="flex-1">
+            <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-ink-mute dark:text-d-ink-mute">Reading</p>
+            <div className="flex items-baseline gap-2 mt-0.5">
+              <span
+                className="text-5xl font-semibold leading-none tracking-tighter text-ink dark:text-d-ink"
+                style={{ letterSpacing: '-0.04em' }}
+              >
+                {value}
+              </span>
+              <span className="text-sm text-ink-mute dark:text-d-ink-mute">/ 10</span>
+            </div>
+            <p className="text-[17px] font-medium text-ink dark:text-d-ink capitalize mt-0.5">{s.label}</p>
+          </div>
+        </div>
+      ) : (
+        <p className="text-ink-mute dark:text-d-ink-mute text-[15px]">Tap a sky below to log how you feel.</p>
+      )}
 
-      {/* 5×2 emoji grid */}
-      <div className="grid grid-cols-5 gap-2 w-full">
-        {SCORES.map(score => {
-          const { emoji, label, color } = getMood(score)
-          const isSelected = value === score
+      {/* 5×2 sky grid */}
+      <div className="grid grid-cols-5 gap-2">
+        {SKIES.map(sk => {
+          const isSelected = value === sk.n
+          const [a] = skyColors(sk.n, isDark)
           return (
             <button
-              key={score}
+              key={sk.n}
               type="button"
-              onClick={() => onChange(score)}
-              title={`${score} – ${label}`}
-              className={`flex items-center justify-center rounded-2xl p-3 text-3xl transition-all duration-150 ${
-                isSelected ? 'scale-110' : 'opacity-55 hover:opacity-90 hover:scale-105'
-              }`}
-              style={isSelected
-                ? { backgroundColor: `${color}25`, boxShadow: `0 4px 20px ${color}50` }
-                : undefined
-              }
+              onClick={() => onChange(sk.n)}
+              title={`${sk.n} – ${sk.label}`}
+              className="flex flex-col items-center gap-1 p-0 bg-transparent border-0 cursor-pointer transition-transform"
+              style={{
+                transform: isSelected ? 'scale(1.04)' : 'none',
+                filter: isSelected ? `drop-shadow(0 6px 16px ${a}55)` : 'none',
+              }}
             >
-              <span role="img" aria-label={label}>{emoji}</span>
+              <SkyChip n={sk.n} size={48} radius={14} selected={isSelected} />
+              <span
+                className={`font-mono text-[10px] font-medium ${
+                  isSelected ? 'text-ink dark:text-d-ink' : 'text-ink-mute dark:text-d-ink-mute'
+                }`}
+              >
+                {sk.n}
+              </span>
             </button>
           )
         })}

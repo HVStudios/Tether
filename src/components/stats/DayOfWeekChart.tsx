@@ -1,53 +1,68 @@
+import { sky, skyColors } from '../../lib/skies'
+import { useTheme } from '../../context/ThemeContext'
 import type { MoodEntry } from '../../lib/types'
 
 interface Props {
   entries: MoodEntry[]
 }
 
-const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+const DAYS = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
 
 export function DayOfWeekChart({ entries }: Props) {
-  // getDay() returns 0=Sun, convert to Mon=0 index
+  const { theme } = useTheme()
+  const isDark = theme === 'dark'
+
   const totals = new Array(7).fill(0)
   const counts = new Array(7).fill(0)
-
   for (const e of entries) {
-    const day = (new Date(e.logged_at).getDay() + 6) % 7 // Mon=0
+    const day = (new Date(e.logged_at).getDay() + 6) % 7
     totals[day] += e.score
     counts[day]++
   }
-
   const avgs = totals.map((t, i) => (counts[i] > 0 ? Math.round((t / counts[i]) * 10) / 10 : null))
-  const maxAvg = Math.max(...avgs.filter((a): a is number => a !== null), 1)
+  const max = Math.max(...avgs.filter((a): a is number => a !== null), 1)
 
   return (
-    <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl border border-white dark:border-gray-800 shadow-lg p-5">
-      <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">Best Days</h3>
-      <p className="text-xs text-gray-400 dark:text-gray-500 mb-4">Average mood by day of week</p>
+    <div className="bg-card dark:bg-d-card rounded-3xl border border-rule dark:border-d-rule p-5">
+      <p className="font-mono text-[10px] tracking-[0.08em] uppercase text-ink-mute dark:text-d-ink-mute mb-3">
+        By day of week
+      </p>
 
-      <div className="flex items-end gap-1.5 h-28">
+      <div className="flex items-end gap-1.5 h-[100px]">
         {avgs.map((avg, i) => {
-          const height = avg !== null ? Math.max((avg / maxAvg) * 100, 8) : 0
-          const isTop = avg !== null && avg === maxAvg
+          const isBest = avg !== null && avg === max
+          const sk = avg !== null ? sky(Math.round(avg)) : null
+          const [a, b] = sk ? skyColors(sk.n, isDark) : [null, null]
+          const height = avg !== null ? Math.max((avg / 10) * 78, 6) : 0
+
           return (
-            <div key={i} className="flex-1 flex flex-col items-center gap-1">
-              <div className="w-full flex-1 relative flex items-end">
+            <div key={i} className="flex-1 flex flex-col items-center gap-1.5">
+              <span
+                className={`font-mono text-[9px] ${
+                  isBest ? 'text-ink dark:text-d-ink font-semibold' : 'text-ink-mute dark:text-d-ink-mute'
+                }`}
+              >
+                {avg !== null ? avg.toFixed(1) : ''}
+              </span>
+              <div className="w-full flex-1 flex items-end">
                 <div
-                  className="w-full rounded-t-lg transition-all duration-500 relative"
+                  className="w-full rounded-lg transition-all duration-500"
                   style={{
-                    height: `${height}%`,
-                    background: isTop
-                      ? 'linear-gradient(to top, #7c3aed, #c026d3)'
-                      : avg !== null
-                      ? 'linear-gradient(to top, #a78bfa, #c4b5fd)'
-                      : 'transparent',
+                    height: avg !== null ? `${height}%` : 0,
+                    background:
+                      a && b
+                        ? `linear-gradient(180deg, ${a}, ${b})`
+                        : 'transparent',
                   }}
                 />
               </div>
-              {avg !== null && (
-                <span className="text-[9px] font-bold text-gray-500 dark:text-gray-400">{avg}</span>
-              )}
-              <span className="text-[10px] text-gray-400 dark:text-gray-500">{DAYS[i]}</span>
+              <span
+                className={`font-mono text-[10px] ${
+                  isBest ? 'text-ink dark:text-d-ink font-semibold' : 'text-ink-mute dark:text-d-ink-mute'
+                }`}
+              >
+                {DAYS[i]}
+              </span>
             </div>
           )
         })}

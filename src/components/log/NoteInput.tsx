@@ -7,12 +7,16 @@ const MAX = 500
 
 export function NoteInput({ value, onChange }: Props) {
   return (
-    <div className="flex flex-col gap-1">
-      <div className="flex justify-between items-baseline">
-        <label className="text-sm font-medium text-gray-700 dark:text-gray-300" htmlFor="mood-note">
-          Note <span className="text-gray-400 dark:text-gray-500 font-normal">(optional)</span>
+    <div className="flex flex-col gap-1.5">
+      <div className="flex justify-between items-center">
+        <label htmlFor="mood-note" className="font-mono text-[10px] tracking-[0.1em] uppercase text-ink-mute dark:text-d-ink-mute">
+          Note
         </label>
-        <span className={`text-xs ${value.length > MAX * 0.9 ? 'text-red-500' : 'text-gray-400 dark:text-gray-500'}`}>
+        <span
+          className={`font-mono text-[10px] ${
+            value.length > MAX * 0.9 ? 'text-red-500' : 'text-ink-dim dark:text-d-ink-dim'
+          }`}
+        >
           {value.length}/{MAX}
         </span>
       </div>
@@ -20,10 +24,10 @@ export function NoteInput({ value, onChange }: Props) {
         id="mood-note"
         rows={3}
         maxLength={MAX}
-        placeholder="How are you feeling? What's on your mind?"
+        placeholder="What's the weather, inside?"
         value={value}
         onChange={e => onChange(e.target.value)}
-        className="rounded-xl border border-gray-200 dark:border-white/8 bg-gray-50 dark:bg-[#0e0a1e] text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-600 px-3.5 py-2.5 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-violet-500/60 dark:focus:ring-violet-500/40 transition-colors"
+        className="w-full bg-transparent border-0 outline-none resize-none text-[15px] leading-[1.5] text-ink dark:text-d-ink placeholder:text-ink-dim dark:placeholder:text-d-ink-dim"
       />
     </div>
   )

@@ -2,20 +2,52 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+@theme {
+  --color-bg: #f4f1ec;
+  --color-bg2: #ebe6dd;
+  --color-card: #ffffff;
+  --color-ink: #1f2433;
+  --color-ink2: #4a4f60;
+  --color-ink-mute: #838899;
+  --color-ink-dim: #b8bcc7;
+  --color-rule: #1f243314;
+  --color-accent: #3d4ee5;
+  --color-accent-soft: #e6e9ff;
+
+  --color-d-bg: #13151c;
+  --color-d-bg2: #1c1e27;
+  --color-d-card: #23262f;
+  --color-d-ink: #f0f1f6;
+  --color-d-ink2: #bdc0cc;
+  --color-d-ink-mute: #787c89;
+  --color-d-ink-dim: #3e424e;
+  --color-d-rule: #f0f1f618;
+  --color-d-accent: #7a87f0;
+  --color-d-accent-soft: #252a4a;
+
+  --font-sans: "Outfit", system-ui, -apple-system, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SF Mono", monospace;
+}
+
 * {
   box-sizing: border-box;
 }
 
-body {
+html, body {
   margin: 0;
-  font-family: system-ui, -apple-system, sans-serif;
-  background: #ede8f5;
-  color: #111827;
+  font-family: "Outfit", system-ui, -apple-system, sans-serif;
+  background: #f4f1ec;
+  color: #1f2433;
+  -webkit-font-smoothing: antialiased;
 }
 
-.dark body {
-  background: #0c0817;
-  color: #f3f4f6;
+.dark html, .dark body {
+  background: #13151c;
+  color: #f0f1f6;
+}
+
+.font-mono {
+  font-family: "Geist Mono", ui-monospace, "SF Mono", monospace;
 }
 
 .safe-top {
@@ -25,3 +57,7 @@ body {
 .safe-bottom {
   padding-bottom: env(safe-area-inset-bottom);
 }
+
+/* Hide scrollbars on horizontally-scrolling chip rows */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; }

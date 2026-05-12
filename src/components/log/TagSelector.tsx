@@ -39,43 +39,46 @@ export function TagSelector({ selected, suggestions, onChange }: Props) {
 
   return (
     <div className="flex flex-col gap-2">
-      <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-        Tags <span className="text-gray-400 dark:text-gray-500 font-normal">(optional)</span>
-      </label>
+      <p className="font-mono text-[10px] tracking-[0.1em] uppercase text-ink-mute dark:text-d-ink-mute">
+        Tags
+      </p>
 
       {allDisplayed.length > 0 && (
         <div className="flex flex-wrap gap-1.5">
-          {allDisplayed.map(tag => (
-            <button
-              key={tag}
-              type="button"
-              onClick={() => toggle(tag)}
-              className={`rounded-full px-3 py-1 text-xs font-semibold transition-all ${
-                selected.includes(tag)
-                  ? 'bg-violet-600 text-white shadow-sm shadow-violet-500/30'
-                  : 'bg-white/60 dark:bg-white/8 text-gray-600 dark:text-gray-400 hover:bg-violet-50 dark:hover:bg-violet-950/40 hover:text-violet-700 dark:hover:text-violet-300 border border-gray-200/80 dark:border-white/8'
-              }`}
-            >
-              {selected.includes(tag) ? `✓ ${tag}` : `#${tag}`}
-            </button>
-          ))}
+          {allDisplayed.map(tag => {
+            const on = selected.includes(tag)
+            return (
+              <button
+                key={tag}
+                type="button"
+                onClick={() => toggle(tag)}
+                className={`rounded-full px-2.5 py-1 text-[12px] font-medium border transition-colors ${
+                  on
+                    ? 'bg-ink text-bg border-ink dark:bg-d-ink dark:text-d-bg dark:border-d-ink'
+                    : 'bg-transparent text-ink2 dark:text-d-ink2 border-rule dark:border-d-rule hover:border-ink/40 dark:hover:border-d-ink/30'
+                }`}
+              >
+                {tag}
+              </button>
+            )
+          })}
         </div>
       )}
 
-      <div className="flex gap-2">
+      <div className="flex gap-2 mt-1">
         <input
           type="text"
           placeholder="Add a tag…"
           value={input}
           onChange={e => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          className="flex-1 rounded-xl border border-gray-200 dark:border-white/8 bg-gray-50 dark:bg-[#0e0a1e] text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-600 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500/60"
+          className="flex-1 rounded-xl border border-rule dark:border-d-rule bg-bg2 dark:bg-d-bg2 text-ink dark:text-d-ink placeholder:text-ink-dim dark:placeholder:text-d-ink-dim px-3 py-1.5 text-[13px] outline-none focus:border-ink/40 dark:focus:border-d-ink/30"
         />
         <button
           type="button"
           onClick={addNew}
           disabled={!input.trim()}
-          className="rounded-xl bg-violet-600 text-white hover:bg-violet-700 px-3 py-1.5 text-sm font-semibold disabled:opacity-30 transition-colors"
+          className="rounded-xl bg-ink text-bg dark:bg-d-ink dark:text-d-bg px-3 py-1.5 text-[13px] font-medium disabled:opacity-30 transition-opacity"
         >
           Add
         </button>

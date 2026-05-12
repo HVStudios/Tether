@@ -3,32 +3,29 @@ interface Props {
 }
 
 const TRIGGERS = [
-  { emoji: '🙏', text: 'Grateful for…' },
-  { emoji: '⚡', text: 'Energy level…' },
-  { emoji: '😤', text: 'Frustrated by…' },
-  { emoji: '🏆', text: 'Proud of…' },
-  { emoji: '😰', text: 'Anxious about…' },
-  { emoji: '🤝', text: 'Connected with…' },
-  { emoji: '🎯', text: 'Focused on…' },
-  { emoji: '💤', text: 'Sleep was…' },
+  'Grateful for…',
+  'Energy level…',
+  'Frustrated by…',
+  'Proud of…',
+  'Anxious about…',
+  'Connected with…',
+  'Focused on…',
+  'Sleep was…',
 ]
 
 export function MoodTriggers({ onSelect }: Props) {
   return (
-    <div className="flex flex-col gap-2">
-      <p className="text-xs text-gray-400 dark:text-gray-500 font-medium uppercase tracking-wide">Prompts</p>
-      <div className="flex flex-wrap gap-1.5">
-        {TRIGGERS.map(t => (
-          <button
-            key={t.text}
-            type="button"
-            onClick={() => onSelect(t.text)}
-            className="rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-violet-100 dark:hover:bg-violet-900 hover:text-violet-700 dark:hover:text-violet-300 px-3 py-1 text-xs font-medium transition-colors"
-          >
-            {t.emoji} {t.text}
-          </button>
-        ))}
-      </div>
+    <div className="flex gap-1.5 flex-wrap">
+      {TRIGGERS.slice(0, 6).map(p => (
+        <button
+          key={p}
+          type="button"
+          onClick={() => onSelect(p)}
+          className="rounded-full border border-rule dark:border-d-rule bg-transparent text-ink2 dark:text-d-ink2 px-2.5 py-1 text-[11px] font-medium hover:border-ink/40 dark:hover:border-d-ink/30 transition-colors"
+        >
+          {p}
+        </button>
+      ))}
     </div>
   )
 }

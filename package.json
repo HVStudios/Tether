@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "icons": "node scripts/generate-icons.mjs",
+    "icons:todo": "echo 'TODO: PWA + apple-touch icons still show the old violet T. Run: npm run icons (regenerates pwa-192.png, pwa-512.png, apple-touch-icon.png, favicon-32.png from the v3 sky mark in scripts/generate-icons.mjs)' && exit 1"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.99.3",
