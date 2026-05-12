@@ -1,9 +1,3 @@
-// TODO: re-run this once node is on PATH to regenerate the PWA icons
-// for the v3 atmospheric design. The committed PNGs in /public are
-// still the old violet "T" — the in-browser favicon.svg is updated,
-// but installed PWAs and iOS home-screen shortcuts pull from the PNGs.
-// Run: `npm run icons` (or `node scripts/generate-icons.mjs`).
-
 import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
